@@ -1,0 +1,24 @@
+sudo: required
+language: node_js
+notifications:
+  email: zhi.696@gmail.com
+node_js:
+- 6.11.5
+services:
+- postgresql
+env:
+  global:
+  - NODE_ENV: test
+  - TRAVIS: true
+addons:
+  postgresql: '9.3'
+before_script:
+- psql -c 'create database tsapiteste;' -U postgres
+- npm install -g sequelize-cli gulp-cli
+- cd server/
+- sequelize db:migrate --env test
+- npm install
+- gulp
+script:
+- npm run unit-test
+- npm run integration-test  
